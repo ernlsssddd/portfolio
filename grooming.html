@@ -252,7 +252,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
         <p class="lead reveal" style="--i:2">Вы всегда знаете, что происходит с питомцем: мастер присылает фото в процессе.</p>
       </div>
       <div>
-        <div class="step reveal"><i>01</i><div><h3>Запись за минуту</h3><p>Выбираете услугу и время на сайте. Подтверждение приходит сразу, напоминание — за день.</p></div></div>
+        <div class="step reveal"><i>01</i><div><h3>Запись за минуту</h3><p>Выбираете услугу и время на сайте — и сразу попадаете в наш WhatsApp с готовым сообщением. Ничего печатать не нужно.</p></div></div>
         <div class="step reveal"><i>02</i><div><h3>Знакомство</h3><p>Десять минут на то, чтобы обнюхать студию и мастера. Обсуждаем стрижку и особенности кожи.</p></div></div>
         <div class="step reveal"><i>03</i><div><h3>Уход</h3><p>Гипоаллергенная косметика, тёплая вода, тихий фен. Один мастер — один питомец.</p></div></div>
         <div class="step reveal"><i>04</i><div><h3>Домой красивым</h3><p>Сообщаем за пятнадцать минут до окончания. Даём советы по уходу до следующего визита.</p></div></div>
@@ -300,11 +300,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
           <div class="field"><span>Услуга</span><div class="chips" id="service"></div></div>
           <div class="field"><span>День</span><div class="chips" id="day"></div></div>
           <div class="field"><span>Время</span><div class="chips" id="time"></div></div>
-          <div class="field" style="margin-bottom:0"><span>Контакты</span>
-            <div class="inputs">
-              <input id="name" placeholder="Ваше имя" autocomplete="name" aria-label="Ваше имя">
-              <input id="phone" placeholder="+7 7__ ___ __ __" inputmode="tel" autocomplete="tel" aria-label="Телефон">
-            </div>
+          <div class="field" style="margin-bottom:0"><span>Как к вам обращаться</span>
+            <input id="name" placeholder="Ваше имя" autocomplete="name" aria-label="Ваше имя">
           </div>
         </div>
         <aside class="panel summary reveal" style="--i:1" id="summary" aria-live="polite">
@@ -313,7 +310,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
           <div class="row"><span>Услуга</span><b id="sService">—</b></div>
           <div class="row"><span>Когда</span><b id="sWhen">—</b></div>
           <div class="total"><span>К оплате в студии</span><b id="sPrice">—</b></div>
-          <button class="btn btn-primary" id="submit" disabled>Записаться</button>
+          <button class="btn btn-primary" id="submit" disabled>Записаться в WhatsApp</button>
           <p class="hint" id="hint">Заполните все поля, чтобы записаться</p>
         </aside>
       </div>
@@ -324,7 +321,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
 <footer>
   <div class="wrap">
     <div>Лапа · ул. Примерная, 1 · ежедневно 9:00–20:00</div>
-    <div class="demo-note">Демонстрационный сайт для портфолио. Студия, цены и отзывы вымышлены, форма записи никуда не отправляет данные. Фотографии: Unsplash.</div>
+    <div class="demo-note">Демонстрационный сайт для портфолио. Студия, цены и отзывы вымышлены. Запись открывает WhatsApp с готовым сообщением; номер студии в демо не задан. Фотографии: Unsplash.</div>
   </div>
 </footer>
 
@@ -405,17 +402,25 @@ function render(){
   validate();
 }
 function validate(){
-  const ok = state.pet && state.service && state.day && state.time && $('name').value.trim().length > 1 && $('phone').value.replace(/\D/g, '').length >= 10;
+  const ok = state.pet && state.service && state.day && state.time && $('name').value.trim().length > 1;
   $('submit').disabled = !ok;
-  $('hint').textContent = ok ? 'Оплата в студии, отменить можно за 3 часа' : 'Заполните все поля, чтобы записаться';
+  $('hint').textContent = ok ? 'Откроется WhatsApp с готовым сообщением — останется нажать «Отправить»' : 'Заполните все поля, чтобы записаться';
 }
-$('name').oninput = validate; $('phone').oninput = validate;
+$('name').oninput = validate;
+
+// Номер WhatsApp студии в международном формате без «+», например '77051234567'.
+// В демо номер не задан: WhatsApp откроется с готовым текстом и предложит выбрать, кому отправить.
+const WHATSAPP = '';
 $('submit').onclick = () => {
   const name = $('name').value.trim(), when = $('sWhen').textContent, svc = state.service;
+  const text = ['Здравствуйте! Хочу записаться в студию «Лапа».', '', 'Питомец: ' + state.pet, 'Услуга: ' + svc + ' (' + money(state.price) + ')', 'Когда: ' + when, 'Имя: ' + name].join('\n');
+  const url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
+  window.open(url, '_blank', 'noopener');
   const box = $('summary');
-  box.innerHTML = '<div class="done"><div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.500 4.500L19 7.500"/></svg></div><h3></h3><p class="hint" style="font-size:15px"></p><p class="hint">Это демо: запись никуда не отправлена.</p></div>';
-  box.querySelector('h3').textContent = name + ', ждём вас!';
+  box.innerHTML = '<div class="done"><div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.500 4.500L19 7.500"/></svg></div><h3></h3><p class="hint" style="font-size:15px"></p><a class="btn btn-primary" target="_blank" rel="noopener" style="margin-top:18px">Открыть WhatsApp</a><p class="hint">Если WhatsApp не открылся сам, нажмите кнопку.</p></div>';
+  box.querySelector('h3').textContent = name + ', осталось отправить';
   box.querySelector('p').textContent = svc + ' · ' + when;
+  box.querySelector('a').href = url;
 };
 render();
 </script>
