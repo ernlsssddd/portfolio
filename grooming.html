@@ -305,13 +305,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
           </div>
         </div>
         <aside class="panel summary reveal" style="--i:1" id="summary" aria-live="polite">
-          <h3>Ваша запись</h3>
-          <div class="row"><span>Питомец</span><b id="sPet">—</b></div>
-          <div class="row"><span>Услуга</span><b id="sService">—</b></div>
-          <div class="row"><span>Когда</span><b id="sWhen">—</b></div>
-          <div class="total"><span>К оплате в студии</span><b id="sPrice">—</b></div>
-          <button class="btn btn-primary" id="submit" disabled>Записаться в WhatsApp</button>
-          <p class="hint" id="hint">Заполните все поля, чтобы записаться</p>
+          <div id="sumMain">
+            <h3>Ваша запись</h3>
+            <div class="row"><span>Питомец</span><b id="sPet">—</b></div>
+            <div class="row"><span>Услуга</span><b id="sService">—</b></div>
+            <div class="row"><span>Когда</span><b id="sWhen">—</b></div>
+            <div class="total"><span>К оплате в студии</span><b id="sPrice">—</b></div>
+            <button class="btn btn-primary" id="submit" disabled>Записаться в WhatsApp</button>
+            <p class="hint" id="hint">Заполните все поля, чтобы записаться</p>
+          </div>
+          <div class="done" id="sumDone" hidden>
+            <div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h3 id="doneTitle"></h3>
+            <p class="hint" style="font-size:15px" id="doneText"></p>
+            <a class="btn btn-primary" id="doneLink" target="_blank" rel="noopener" style="margin-top:18px">Открыть WhatsApp</a>
+            <p class="hint">Если WhatsApp не открылся сам, нажмите кнопку.</p>
+          </div>
         </aside>
       </div>
     </div>
@@ -390,6 +399,8 @@ const days = Array.from({length:8}, (_, i) => { const d = new Date(); d.setDate(
 const wd = d => d.toLocaleDateString('ru-RU', {weekday:'short'});
 
 function render(){
+  // любое изменение после отправки возвращает сводку вместо экрана «осталось отправить»
+  $('sumMain').hidden = false; $('sumDone').hidden = true;
   chips($('pet'), PETS.map(p => ({value:p, html:p, then:() => { state.service = null; state.price = null; }})), 'pet', render);
   chips($('service'), (SERVICES[state.pet] || SERVICES['Собака']).map(([n, p]) => ({value:n, html:n + ' · ' + money(p), then:() => state.price = p})), 'service', render);
   chips($('day'), days.map(d => ({value:d.toDateString(), cls:'day', html:'<small>' + wd(d) + '</small><b>' + d.getDate() + '</b>', then:() => state.time = null})), 'day', render);
@@ -416,11 +427,10 @@ $('submit').onclick = () => {
   const text = ['Здравствуйте! Хочу записаться в студию «Лапа».', '', 'Питомец: ' + state.pet, 'Услуга: ' + svc + ' (' + money(state.price) + ')', 'Когда: ' + when, 'Имя: ' + name].join('\n');
   const url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
   window.open(url, '_blank', 'noopener');
-  const box = $('summary');
-  box.innerHTML = '<div class="done"><div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.500 4.500L19 7.500"/></svg></div><h3></h3><p class="hint" style="font-size:15px"></p><a class="btn btn-primary" target="_blank" rel="noopener" style="margin-top:18px">Открыть WhatsApp</a><p class="hint">Если WhatsApp не открылся сам, нажмите кнопку.</p></div>';
-  box.querySelector('h3').textContent = name + ', осталось отправить';
-  box.querySelector('p').textContent = svc + ' · ' + when;
-  box.querySelector('a').href = url;
+  $('doneTitle').textContent = name + ', осталось отправить';
+  $('doneText').textContent = svc + ' · ' + when;
+  $('doneLink').href = url;
+  $('sumMain').hidden = true; $('sumDone').hidden = false;
 };
 render();
 </script>

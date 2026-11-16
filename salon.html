@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Локон — салон красоты</title>
+<meta name="description" content="Демонстрационный сайт салона красоты: услуги с ценами, мастера, работы и запись через WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf6f2; --surface:#fff; --soft:#f1ebe5; --ink:#211a1c; --muted:#75696b; --line:#e6ddd6;
+  --accent:#9a3655; --accent-ink:#fff; --accent-soft:#f6e6ea; --dark:#2a1c21;
+  --on-ink:#fff; --glass:rgba(255,255,255,.86); --nav-bg:rgba(250,246,242,.74); --glow:rgba(154,54,85,.7); --tint:#f0c6d1;
+  --r-lg:32px; --r-md:22px; --r-sm:14px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --wrap:1160px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+section{padding:120px 0}
+h1,h2{font-family:var(--display);font-weight:500;letter-spacing:-.015em;line-height:1;text-wrap:balance}
+h2{font-size:clamp(40px,5.6vw,72px)}
+h1 em,h2 em{font-style:italic;color:var(--accent)}
+h3{letter-spacing:-.02em;line-height:1.15}
+.eyebrow{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:18px;text-transform:uppercase;letter-spacing:.14em}
+.lead{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:540px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:999px;font-weight:600;font-size:16px;transition:transform .3s var(--ease),background .3s,box-shadow .3s,color .3s}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px -12px var(--glow)}
+.btn-line{box-shadow:inset 0 0 0 1px var(--line)}
+.btn-line:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+/* появление при прокрутке */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--i,0)*90ms)}
+.reveal.in{opacity:1;transform:none}
+
+/* навигация */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:var(--nav-bg);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:var(--display);font-weight:600;font-size:27px;letter-spacing:-.01em;line-height:1}
+.logo i{font-style:italic;color:var(--accent)}
+.nav-links{display:flex;gap:30px;font-size:14px;color:var(--muted)}
+.nav-links a{transition:color .25s}
+.nav-links a:hover{color:var(--ink)}
+.nav .btn{padding:9px 18px;font-size:14px}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* первый экран */
+.hero{padding:130px 0 80px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
+.hero h1{font-size:clamp(50px,7.6vw,108px);line-height:.96}
+.ln{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.ln>span{display:block;transform:translateY(112%);transition:transform 1.1s var(--ease);transition-delay:calc(var(--i,0)*120ms + 100ms)}
+.ready .ln>span{transform:none}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:36px}
+.facts{display:flex;gap:38px;margin-top:54px;padding-top:28px;border-top:1px solid var(--line)}
+.facts b{display:block;font-family:var(--display);font-size:40px;font-weight:500;line-height:1}
+.facts span{font-size:14px;color:var(--muted)}
+.arch-box{position:relative;justify-self:end;width:min(100%,440px)}
+.arch{aspect-ratio:3/4.1;border-radius:999px 999px var(--r-lg) var(--r-lg);overflow:hidden;background:var(--soft);clip-path:inset(100% 0 0 0 round 999px 999px 32px 32px);transition:clip-path 1.5s var(--ease) .15s}
+.ready .arch{clip-path:inset(0 0 0 0 round 999px 999px 32px 32px)}
+.arch img{transform:scale(1.14) translateY(var(--p,0));will-change:transform}
+.slot{position:absolute;left:-34px;bottom:44px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;padding:15px 20px;box-shadow:0 24px 50px -24px rgba(33,26,28,.45);display:flex;align-items:center;gap:13px;opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease) 1s,transform .9s var(--ease) 1s}
+.ready .slot{opacity:1;transform:none}
+.dot{width:10px;height:10px;border-radius:50%;background:#2fa36b;box-shadow:0 0 0 0 rgba(47,163,107,.5);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(47,163,107,0)}100%{box-shadow:0 0 0 0 rgba(47,163,107,0)}}
+.slot small{display:block;font-size:12px;color:var(--muted)}
+.slot b{font-size:15px}
+@media(max-width:900px){
+  .hero{padding-top:110px}
+  .hero-grid{grid-template-columns:1fr;gap:50px}
+  .arch-box{justify-self:center;width:min(100%,380px)}
+  .slot{left:-6px}
+  .facts{gap:26px}
+}
+
+/* бегущая строка */
+.marquee{border-block:1px solid var(--line);overflow:hidden;padding:22px 0}
+.track{display:flex;width:max-content;animation:run 38s linear infinite}
+.track span{font-family:var(--display);font-size:clamp(26px,3.2vw,40px);font-style:italic;padding:0 26px;white-space:nowrap;display:flex;align-items:center;gap:52px}
+.track span::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* услуги */
+.svc{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;align-items:start;margin-top:60px}
+.svc-media{position:sticky;top:100px;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;background:var(--soft)}
+.svc-media img{position:absolute;inset:0;opacity:0;transform:scale(1.08);transition:opacity .9s var(--ease),transform 1.6s var(--ease)}
+.svc-media img.on{opacity:1;transform:none}
+.tabs{position:relative;display:inline-flex;background:var(--soft);border-radius:999px;padding:5px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{position:relative;z-index:1;padding:11px 20px;border-radius:999px;font-size:15px;font-weight:500;color:var(--muted);white-space:nowrap;transition:color .35s}
+.tabs button[aria-selected=true]{color:var(--on-ink)}
+.pill{position:absolute;top:5px;bottom:5px;left:0;border-radius:999px;background:var(--ink);transition:transform .5s var(--ease),width .5s var(--ease)}
+.list{margin-top:30px}
+.item{display:grid;grid-template-columns:1fr auto 44px;gap:18px;align-items:center;width:100%;text-align:left;padding:24px 0;border-bottom:1px solid var(--line);animation:rise .7s var(--ease) backwards;animation-delay:calc(var(--i)*70ms)}
+.item:first-child{border-top:1px solid var(--line)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.item .n{display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.15;transition:color .3s}
+.item .d{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.item .cost{text-align:right;font-weight:600;font-size:17px;white-space:nowrap}
+.item .cost small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.item .go{width:44px;height:44px;border-radius:50%;background:var(--soft);display:grid;place-items:center;transition:background .3s,transform .4s var(--ease)}
+.item .go svg{width:17px;height:17px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+.item:hover .n{color:var(--accent)}
+.item:hover .go{background:var(--accent);transform:translateX(4px)}
+.item:hover .go svg{stroke:var(--accent-ink)}
+.svc-note{color:var(--muted);font-size:14px;margin-top:20px}
+@media(max-width:900px){
+  .svc{grid-template-columns:1fr;gap:34px}
+  .svc-media{position:relative;top:0;aspect-ratio:4/3.4}
+  .item{grid-template-columns:1fr auto;gap:14px}
+  .item .go{display:none}
+}
+
+/* студия */
+.studio{padding:0}
+.studio-box{position:relative;width:min(100% - 48px,1320px);margin:0 auto;aspect-ratio:16/7.4;border-radius:var(--r-lg);overflow:hidden;color:#fff;background:var(--dark)}
+.studio-box img{position:absolute;inset:-8% 0;height:116%;transform:translateY(var(--p,0));will-change:transform}
+.studio-box::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(33,20,25,.82),rgba(33,20,25,.25) 60%,rgba(33,20,25,.1))}
+.studio-tx{position:absolute;z-index:1;left:clamp(26px,5vw,70px);bottom:clamp(26px,5vw,64px);max-width:520px}
+.studio-tx .eyebrow{color:var(--tint)}
+.studio-tx h2 em{color:var(--tint)}
+.studio-tx p{margin-top:18px;color:rgba(255,255,255,.84);font-size:17px}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-top:64px;text-align:center}
+.counts b{display:block;font-family:var(--display);font-size:clamp(46px,6vw,76px);font-weight:500;line-height:1}
+.counts span{color:var(--muted);font-size:15px}
+@media(max-width:760px){.studio-box{aspect-ratio:4/5}.studio-box::after{background:linear-gradient(180deg,rgba(33,20,25,.1) 30%,rgba(33,20,25,.86))}}
+
+/* мастера */
+.team{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;margin-top:60px}
+.team-photo{aspect-ratio:4/3.5;border-radius:var(--r-lg);overflow:hidden;background:var(--soft)}
+.team-photo img{transition:transform 1.6s var(--ease)}
+.team-photo:hover img{transform:scale(1.04)}
+.master{display:grid;grid-template-columns:58px 1fr auto;gap:18px;align-items:center;width:100%;text-align:left;padding:22px 0;border-bottom:1px solid var(--line)}
+.master:first-child{border-top:1px solid var(--line)}
+.ava{width:58px;height:58px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--display);font-size:28px;font-weight:600;transition:background .35s,color .35s}
+.master:hover .ava{background:var(--accent);color:var(--accent-ink)}
+.master .n{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.master .d{display:block;color:var(--muted);font-size:15px;margin-top:2px}
+.master .cta{font-size:14px;font-weight:600;color:var(--accent);white-space:nowrap}
+@media(max-width:900px){.team{grid-template-columns:1fr;gap:36px}.master .cta{display:none}.master{grid-template-columns:58px 1fr}}
+
+/* работы */
+.works{background:var(--soft);overflow:hidden}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:60px}
+.col{display:grid;gap:20px;align-content:start;transform:translateY(var(--y,0));will-change:transform}
+.col:nth-child(2){margin-top:70px}
+.shot{position:relative;border-radius:var(--r-md);overflow:hidden;background:var(--line);aspect-ratio:4/5}
+.shot.tall{aspect-ratio:4/5.8}
+.shot img{transition:transform 1.3s var(--ease)}
+.shot:hover img{transform:scale(1.06)}
+.shot figcaption{position:absolute;left:16px;bottom:16px;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600}
+@media(max-width:760px){
+  .cols{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:44px -24px 0;padding:0 24px 6px;scrollbar-width:none}
+  .cols::-webkit-scrollbar{display:none}
+  .col{display:contents}
+  .shot,.shot.tall{flex:0 0 74vw;aspect-ratio:4/5;scroll-snap-align:center}
+}
+
+/* отзывы */
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:60px}
+.review{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:32px;display:flex;flex-direction:column}
+.stars{color:#d99a2b;letter-spacing:3px;font-size:14px}
+.review p{font-family:var(--display);font-size:25px;line-height:1.22;margin:18px 0 26px}
+.review b{display:block;font-size:15px;margin-top:auto}
+.review span{color:var(--muted);font-size:14px}
+@media(max-width:900px){.reviews{grid-template-columns:1fr}}
+
+/* запись */
+.book-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;margin-top:60px;align-items:start}
+.panel{background:var(--surface);border-radius:var(--r-lg);padding:34px;border:1px solid var(--line)}
+.field{margin-bottom:28px}
+.field>span{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:11px 18px;border-radius:999px;background:var(--soft);font-size:15px;font-weight:500;transition:background .25s,color .25s,transform .25s var(--ease)}
+.chip:hover{transform:translateY(-1px)}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--on-ink)}
+.chip.day{border-radius:16px;padding:10px 0;width:64px;text-align:center;line-height:1.2}
+.chip.day small{display:block;font-size:11px;opacity:.65;text-transform:uppercase}
+.chip.day b{font-size:19px}
+.chip:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed;transform:none}
+input{width:100%;font:inherit;padding:15px 18px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--bg);color:var(--ink);transition:border-color .25s,box-shadow .25s}
+input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.summary{position:sticky;top:90px}
+.summary h3{font-family:var(--display);font-size:30px;font-weight:500;margin-bottom:16px}
+.row{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+.row span{color:var(--muted)}.row b{text-align:right;font-weight:600}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0}
+.total span{color:var(--muted);font-size:15px}
+.total b{font-family:var(--display);font-size:40px;font-weight:500;line-height:1}
+.summary .btn{width:100%;justify-content:center}
+.summary .btn:disabled{background:var(--line);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
+.hint{font-size:13px;color:var(--muted);margin-top:14px;text-align:center}
+.done{text-align:center;padding:26px 0}
+.check{width:72px;height:72px;border-radius:50%;background:var(--accent);margin:0 auto 22px;display:grid;place-items:center;animation:pop .6s var(--ease)}
+.check svg{width:34px;height:34px;stroke:var(--accent-ink);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .3s forwards}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media(max-width:900px){.book-grid{grid-template-columns:1fr}.summary{position:static}.panel{padding:26px}}
+
+footer{padding:60px 0;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:30px}
+.demo-note{max-width:540px}
+
+@media(max-width:760px){section{padding:84px 0}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal,.ln>span,.slot{opacity:1;transform:none;transition:none}
+  .arch{clip-path:none;transition:none}
+  .arch img,.studio-box img,.col{transform:none}
+  *{animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Локон, на главную">Лок<i>о</i>н</a>
+    <nav class="nav-links" aria-label="Разделы">
+      <a href="#services">Услуги и цены</a><a href="#team">Мастера</a><a href="#works">Работы</a><a href="#reviews">Отзывы</a>
+    </nav>
+    <a class="btn btn-primary" href="#booking">Записаться</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow reveal">Салон красоты · Павлодар</p>
+        <h1 aria-label="Красота, на которую есть время.">
+          <span class="ln" aria-hidden="true"><span>Красота,</span></span>
+          <span class="ln" aria-hidden="true" style="--i:1"><span>на которую</span></span>
+          <span class="ln" aria-hidden="true" style="--i:2"><span><em>есть время.</em></span></span>
+        </h1>
+        <p class="lead reveal" style="--i:3">Стрижки, окрашивание, ногти и макияж в одном месте. Один мастер — один гость: никто не торопит и не уходит к соседнему креслу.</p>
+        <div class="hero-cta reveal" style="--i:4">
+          <a class="btn btn-primary" href="#booking">Выбрать время</a>
+          <a class="btn btn-line" href="#services">Услуги и цены</a>
+        </div>
+        <div class="facts reveal" style="--i:5">
+          <div><b>4,9</b><span>оценка гостей</span></div>
+          <div><b>8 лет</b><span>работаем</span></div>
+          <div><b>10–20</b><span>без выходных</span></div>
+        </div>
+      </div>
+      <div class="arch-box">
+        <div class="arch" id="arch">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1100&q=80" alt="Девушка с длинными волнистыми волосами на розовом фоне, вид со спины">
+        </div>
+        <div class="slot"><i class="dot" aria-hidden="true"></i><div><small>Ближайшее окно</small><b id="slotText">Завтра, 11:00</b></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="track"></div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <p class="eyebrow reveal">Услуги и цены</p>
+      <h2 class="reveal" style="--i:1">Цены видны сразу.<br><em>Без «уточняйте в директ».</em></h2>
+      <div class="svc">
+        <div class="svc-media reveal" id="svcMedia"></div>
+        <div class="reveal" style="--i:1">
+          <div class="tabs" id="tabs" role="tablist" aria-label="Категории услуг"><i class="pill" id="pill" aria-hidden="true"></i></div>
+          <div class="list" id="list" role="tabpanel"></div>
+          <p class="svc-note">Нажмите на услугу — она сразу подставится в запись.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="studio">
+    <div class="studio-box reveal" id="studio">
+      <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?auto=format&fit=crop&w=2000&q=80" alt="Светлый зал салона с зеркалами и креслами" loading="lazy">
+      <div class="studio-tx">
+        <p class="eyebrow">Студия</p>
+        <h2>Светло, тихо<br><em>и пахнет кофе.</em></h2>
+        <p>Шесть кресел, отдельный кабинет для ногтей и зона, где можно подождать с чашкой капучино.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="counts">
+        <div class="reveal"><b data-count="12400">0</b><span>визитов за 8 лет</span></div>
+        <div class="reveal" style="--i:1"><b data-count="72" data-suffix="%">0</b><span>гостей возвращаются</span></div>
+        <div class="reveal" style="--i:2"><b data-count="6">0</b><span>кресел в зале</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="wrap">
+      <p class="eyebrow reveal">Мастера</p>
+      <h2 class="reveal" style="--i:1">Вы приходите<br><em>к своему мастеру.</em></h2>
+      <div class="team">
+        <div class="team-photo reveal">
+          <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1400&q=80" alt="Три мастера салона улыбаются, в руках ножницы и расчёски" loading="lazy">
+        </div>
+        <div class="reveal" style="--i:1" id="masters"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="works" id="works">
+    <div class="wrap">
+      <p class="eyebrow reveal">Работы</p>
+      <h2 class="reveal" style="--i:1">Смотрите,<br><em>а потом записывайтесь.</em></h2>
+      <div class="cols" id="cols">
+        <div class="col" data-speed="-26">
+          <figure class="shot tall"><img loading="lazy" src="https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&w=900&q=80" alt="Мастер собирает вечернюю причёску"><figcaption>Вечерняя причёска</figcaption></figure>
+          <figure class="shot"><img loading="lazy" src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=900&q=80" alt="Кисти для макияжа в стакане"><figcaption>Макияж</figcaption></figure>
+        </div>
+        <div class="col" data-speed="30">
+          <figure class="shot"><img loading="lazy" src="https://images.unsplash.com/photo-1470259078422-826894b933aa?auto=format&fit=crop&w=900&q=80" alt="Девушка с ярко-розовыми волосами"><figcaption>Яркое окрашивание</figcaption></figure>
+          <figure class="shot tall"><img loading="lazy" src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=900&q=80" alt="Мастер укладывает волосы феном и брашингом"><figcaption>Укладка</figcaption></figure>
+        </div>
+        <div class="col" data-speed="-18">
+          <figure class="shot tall"><img loading="lazy" src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=900&q=80" alt="Девушка с объёмными кудрявыми волосами"><figcaption>Уход за кудрями</figcaption></figure>
+          <figure class="shot"><img loading="lazy" src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=900&q=80" alt="Мастер моет гостье голову"><figcaption>Уход и мытьё</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="wrap">
+      <p class="eyebrow reveal">Отзывы</p>
+      <h2 class="reveal" style="--i:1">Возвращаются<br><em>семь из десяти.</em></h2>
+      <div class="reviews">
+        <div class="review reveal"><div class="stars" aria-label="5 из 5">★★★★★</div><p>Впервые цвет получился таким, как на фото, которое я принесла. И держится уже третий месяц.</p><b>Айжан</b><span>сложное окрашивание</span></div>
+        <div class="review reveal" style="--i:1"><div class="stars" aria-label="5 из 5">★★★★★</div><p>Записалась с телефона в одиннадцать вечера. Утром мне просто подтвердили время — без звонков.</p><b>Виктория</b><span>стрижка и укладка</span></div>
+        <div class="review reveal" style="--i:2"><div class="stars" aria-label="5 из 5">★★★★★</div><p>Цены на сайте совпали с тем, что я заплатила. Мелочь, а возвращаюсь именно поэтому.</p><b>Асель</b><span>маникюр с покрытием</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow reveal">Запись</p>
+      <h2 class="reveal" style="--i:1">Минута —<br><em>и вы записаны.</em></h2>
+      <div class="book-grid">
+        <div class="panel reveal">
+          <div class="field"><span>Что делаем</span><div class="chips" id="cat"></div></div>
+          <div class="field"><span>Услуга</span><div class="chips" id="service"></div></div>
+          <div class="field"><span>Мастер</span><div class="chips" id="master"></div></div>
+          <div class="field"><span>День</span><div class="chips" id="day"></div></div>
+          <div class="field"><span>Время</span><div class="chips" id="time"></div></div>
+          <div class="field" style="margin-bottom:0"><span>Как к вам обращаться</span>
+            <input id="name" placeholder="Ваше имя" autocomplete="name" aria-label="Ваше имя">
+          </div>
+        </div>
+        <aside class="panel summary reveal" style="--i:1" id="summary" aria-live="polite">
+          <div id="sumMain">
+            <h3>Ваша запись</h3>
+            <div class="row"><span>Услуга</span><b id="sService">—</b></div>
+            <div class="row"><span>Мастер</span><b id="sMaster">—</b></div>
+            <div class="row"><span>Когда</span><b id="sWhen">—</b></div>
+            <div class="total"><span>К оплате в салоне</span><b id="sPrice">—</b></div>
+            <button class="btn btn-primary" id="submit" disabled>Записаться в WhatsApp</button>
+            <p class="hint" id="hint">Заполните все поля, чтобы записаться</p>
+          </div>
+          <div class="done" id="sumDone" hidden>
+            <div class="check"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h3 id="doneTitle"></h3>
+            <p class="hint" style="font-size:15px" id="doneText"></p>
+            <a class="btn btn-primary" id="doneLink" target="_blank" rel="noopener" style="margin-top:18px">Открыть WhatsApp</a>
+            <p class="hint">Если WhatsApp не открылся сам, нажмите кнопку.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>Локон · ул. Примерная, 1 · ежедневно 10:00–20:00</div>
+    <div class="demo-note">Демонстрационный сайт для портфолио. Салон, мастера, цены и отзывы вымышлены. Запись открывает WhatsApp с готовым сообщением; номер салона в демо не задан. Фотографии: Unsplash.</div>
+  </div>
+</footer>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const money = n => n.toLocaleString('ru-RU') + ' ₸';
+const photo = (id, w) => 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=' + w + '&q=80';
+
+// Данные салона: одна таблица и для прайса, и для формы записи.
+// [название, пояснение, цена, «от» или нет, длительность]
+const CATS = {
+  'Волосы': {img:'1562322140-8baeececf3df', alt:'Мастер сушит гостье волосы феном', items:[
+    ['Женская стрижка','Консультация, мытьё, стрижка и укладка',6000,false,'1 час'],
+    ['Мужская стрижка','Машинка и ножницы, мытьё, укладка',4000,false,'45 минут'],
+    ['Укладка','Локоны, брашинг или гладкий блеск',5000,false,'45 минут'],
+    ['Вечерняя причёска','С пробной сборкой по вашему фото',12000,true,'1,5 часа'],
+    ['Восстанавливающий уход','Маска, сыворотка и горячая укладка',9000,true,'1 час']
+  ]},
+  'Окрашивание': {img:'1492106087820-71f1a00d2b11', alt:'Девушка с длинными волосами сиреневого оттенка', items:[
+    ['Окрашивание в один тон','Корни или вся длина',15000,true,'2 часа'],
+    ['Сложное окрашивание','Балаяж, шатуш, аиртач',35000,true,'4–5 часов'],
+    ['Тонирование','Освежить оттенок и убрать желтизну',12000,true,'1,5 часа'],
+    ['Консультация по цвету','Подбор оттенка и расчёт стоимости',0,false,'20 минут']
+  ]},
+  'Ногти': {img:'1604654894610-df63bc536371', alt:'Рука с тёмным маникюром крупным планом', items:[
+    ['Маникюр с покрытием','Аппаратный, гель-лак, один цвет',7000,false,'1,5 часа'],
+    ['Маникюр без покрытия','Форма, кутикула, полировка',4000,false,'45 минут'],
+    ['Педикюр с покрытием','Аппаратный, гель-лак',9000,false,'1,5 часа'],
+    ['Дизайн','Френч, втирка, рисунок',1500,true,'+20 минут']
+  ]},
+  'Макияж': {img:'1487412947147-5cebf100ffc2', alt:'Гостье наносят помаду, макияж крупным планом', items:[
+    ['Дневной макияж','Лёгкий тон и акцент на глаза',10000,false,'1 час'],
+    ['Вечерний макияж','Стойкий, под фото и свет',15000,false,'1,5 часа'],
+    ['Оформление бровей','Коррекция и окрашивание',4000,false,'30 минут']
+  ]}
+};
+const MASTERS = [
+  ['Алина','Стилист-колорист','9 лет в профессии', ['Волосы','Окрашивание']],
+  ['Дана','Парикмахер и визажист','6 лет в профессии', ['Волосы','Макияж']],
+  ['Мадина','Мастер маникюра','7 лет в профессии', ['Ногти']]
+];
+const ANY = 'Любой свободный';
+const TIMES = ['10:00','11:30','13:00','14:30','16:00','17:30','19:00'];
+const FIRST = Object.keys(CATS)[0];
+const state = {cat:FIRST, service:null, price:null, from:false, master:null, day:null, time:null};
+const cost = (p, from) => p ? (from ? 'от ' : '') + money(p) : 'бесплатно';
+
+// первый экран
+const start = () => document.body.classList.add('ready');
+requestAnimationFrame(() => requestAnimationFrame(start));
+setTimeout(start, 350);
+
+// появление блоков
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// бегущая строка
+const words = ['Стрижки','Окрашивание','Укладки','Уход','Маникюр','Педикюр','Макияж','Брови'];
+$('track').innerHTML = words.concat(words).map(w => '<span>' + w + '</span>').join('');
+
+// параллакс: арка, зал, колонки с работами
+const nav = $('nav'), arch = $('arch'), studio = $('studio'), cols = [...document.querySelectorAll('.col')];
+const wide = matchMedia('(min-width: 761px)');
+let ticking = false;
+function onScroll(){
+  nav.classList.toggle('scrolled', scrollY > 10);
+  if (!reduce) {
+    const vh = innerHeight;
+    const a = arch.getBoundingClientRect();
+    arch.style.setProperty('--p', (((a.top + a.height / 2) / vh - .5) * -5).toFixed(2) + '%');
+    const s = studio.getBoundingClientRect();
+    if (s.bottom > 0 && s.top < vh) studio.style.setProperty('--p', (((s.top + s.height / 2) / vh - .5) * -7).toFixed(2) + '%');
+    const c = $('cols').getBoundingClientRect();
+    if (c.bottom > 0 && c.top < vh) {
+      const k = (c.top + c.height / 2) / vh - .5;
+      cols.forEach(el => el.style.setProperty('--y', wide.matches ? (k * +el.dataset.speed).toFixed(1) + 'px' : '0px'));
+    }
+  }
+  ticking = false;
+}
+addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, {passive:true});
+addEventListener('resize', onScroll);
+onScroll();
+
+// счётчики
+const cio = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return; cio.unobserve(e.target);
+  const el = e.target, end = +el.dataset.count, suf = el.dataset.suffix || '', t0 = performance.now(), dur = reduce ? 0 : 1500;
+  const fmt = v => Math.round(v).toLocaleString('ru-RU') + suf;
+  el.textContent = fmt(end);
+  if (!dur) return;
+  (function tick(now){ const k = Math.min(1, (now - t0) / dur); el.textContent = fmt(end * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(tick); })(t0);
+}), {threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+
+// прайс с вкладками
+const tabs = $('tabs'), pill = $('pill'), list = $('list'), media = $('svcMedia');
+let shown = null;
+Object.keys(CATS).forEach((name, i) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = name; b.setAttribute('role', 'tab'); b.dataset.cat = name;
+  b.onclick = () => showCat(name);
+  tabs.appendChild(b);
+  const im = new Image();
+  im.alt = CATS[name].alt; im.dataset.cat = name; if (i) im.loading = 'lazy';
+  im.src = photo(CATS[name].img, 1000);
+  media.appendChild(im);
+});
+function movePill(){
+  const b = tabs.querySelector('[aria-selected=true]'); if (!b) return;
+  pill.style.width = b.offsetWidth + 'px';
+  pill.style.transform = 'translateX(' + b.offsetLeft + 'px)';
+}
+function showCat(name){
+  if (shown === name) return; shown = name;
+  tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', b.dataset.cat === name));
+  media.querySelectorAll('img').forEach(im => im.classList.toggle('on', im.dataset.cat === name));
+  movePill();
+  list.innerHTML = '';
+  CATS[name].items.forEach(([n, d, p, from, dur], i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'item'; b.style.setProperty('--i', i);
+    b.innerHTML = '<span><span class="n"></span><span class="d"></span></span><span class="cost"><span class="p"></span><small></small></span><span class="go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
+    b.querySelector('.n').textContent = n; b.querySelector('.d').textContent = d;
+    b.querySelector('.p').textContent = cost(p, from); b.querySelector('small').textContent = dur;
+    b.setAttribute('aria-label', n + ', ' + cost(p, from) + '. Записаться');
+    b.onclick = () => pick({cat:name, service:n, price:p, from});
+    list.appendChild(b);
+  });
+}
+addEventListener('resize', movePill);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
+showCat(FIRST);
+
+// мастера
+MASTERS.forEach(([n, role, exp]) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'master';
+  b.innerHTML = '<i class="ava" aria-hidden="true"></i><span><span class="n"></span><span class="d"></span></span><span class="cta">Записаться →</span>';
+  b.querySelector('.ava').textContent = n[0]; b.querySelector('.n').textContent = n;
+  b.querySelector('.d').textContent = role + ' · ' + exp;
+  b.onclick = () => pick({master:n});
+  $('masters').appendChild(b);
+});
+
+// запись
+function pick(p){
+  if (p.cat && p.cat !== state.cat) { state.cat = p.cat; state.master = null; }
+  if (p.service) { state.service = p.service; state.price = p.price; state.from = p.from; }
+  if (p.master) {
+    state.master = p.master;
+    const can = MASTERS.find(m => m[0] === p.master)[3];
+    if (!can.includes(state.cat)) { state.cat = can[0]; state.service = null; state.price = null; }
+  }
+  render();
+  $('booking').scrollIntoView({behavior: reduce ? 'auto' : 'smooth'});
+}
+function chips(box, items, key){
+  box.innerHTML = '';
+  items.forEach(it => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (it.cls ? ' ' + it.cls : ''); b.innerHTML = it.html;
+    b.setAttribute('aria-pressed', state[key] === it.value); b.disabled = !!it.off;
+    b.onclick = () => { state[key] = it.value; if (it.then) it.then(); render(); };
+    box.appendChild(b);
+  });
+}
+// занятые окна зависят от дня и мастера, чтобы форма выглядела живой
+const busy = (d, i) => d && ((d.getDate() * 5 + i * 3 + (state.master || '').length) % 4 === 0);
+const days = Array.from({length:8}, (_, i) => { const d = new Date(); d.setDate(d.getDate() + i + 1); return d; });
+const wd = d => d.toLocaleDateString('ru-RU', {weekday:'short'});
+
+function render(){
+  // любое изменение после отправки возвращает сводку вместо экрана «осталось отправить»
+  $('sumMain').hidden = false; $('sumDone').hidden = true;
+  chips($('cat'), Object.keys(CATS).map(c => ({value:c, html:c, then:() => { state.service = null; state.price = null; state.master = null; }})), 'cat');
+  chips($('service'), CATS[state.cat].items.map(([n, , p, from]) => ({value:n, html:n + ' · ' + cost(p, from), then:() => { state.price = p; state.from = from; }})), 'service');
+  const who = MASTERS.filter(m => m[3].includes(state.cat)).map(m => m[0]);
+  chips($('master'), [ANY].concat(who).map(m => ({value:m, html:m, then:() => state.time = null})), 'master');
+  chips($('day'), days.map(d => ({value:d.toDateString(), cls:'day', html:'<small>' + wd(d) + '</small><b>' + d.getDate() + '</b>', then:() => state.time = null})), 'day');
+  const cur = days.find(d => d.toDateString() === state.day);
+  chips($('time'), TIMES.map((t, i) => ({value:t, html:t, off:busy(cur, i)})), 'time');
+  $('sService').textContent = state.service || '—';
+  $('sMaster').textContent = state.master || '—';
+  $('sWhen').textContent = cur && state.time ? cur.toLocaleDateString('ru-RU', {day:'numeric', month:'long'}) + ', ' + state.time : '—';
+  $('sPrice').textContent = state.service ? cost(state.price, state.from) : '—';
+  validate();
+}
+function validate(){
+  const ok = state.service && state.master && state.day && state.time && $('name').value.trim().length > 1;
+  $('submit').disabled = !ok;
+  $('hint').textContent = ok ? 'Откроется WhatsApp с готовым сообщением — останется нажать «Отправить»' : 'Заполните все поля, чтобы записаться';
+}
+$('name').oninput = validate;
+
+// Номер WhatsApp салона в международном формате без «+», например '77051234567'.
+// В демо номер не задан: WhatsApp откроется с готовым текстом и предложит выбрать, кому отправить.
+const WHATSAPP = '';
+$('submit').onclick = () => {
+  const name = $('name').value.trim(), when = $('sWhen').textContent, svc = state.service;
+  const text = ['Здравствуйте! Хочу записаться в салон «Локон».', '', 'Услуга: ' + svc + ' (' + cost(state.price, state.from) + ')', 'Мастер: ' + state.master, 'Когда: ' + when, 'Имя: ' + name].join('\n');
+  const url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
+  window.open(url, '_blank', 'noopener');
+  $('doneTitle').textContent = name + ', осталось отправить';
+  $('doneText').textContent = svc + ' · ' + when;
+  $('doneLink').href = url;
+  $('sumMain').hidden = true; $('sumDone').hidden = false;
+};
+
+// «Ближайшее окно» на первом экране — первое свободное время завтра
+(function(){
+  const i = TIMES.findIndex((t, k) => !busy(days[0], k));
+  if (i > -1) $('slotText').textContent = 'Завтра, ' + TIMES[i];
+})();
+render();
+</script>
+</body>
+</html>

@@ -18,22 +18,23 @@ img{display:block;width:100%;height:100%;object-fit:cover}
 header{padding:110px 0 70px;text-align:center}
 h1{font-size:clamp(40px,7vw,84px);font-weight:700;letter-spacing:-.035em;line-height:1.04;text-wrap:balance}
 header p{font-size:clamp(18px,2vw,22px);color:var(--muted);max-width:620px;margin:24px auto 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding-bottom:90px}
-.card{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:4/4.6;display:flex;align-items:flex-end;color:#fff;transition:transform .6s var(--ease),box-shadow .6s var(--ease);animation:rise .9s var(--ease) both}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;padding-bottom:90px}
+.card{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:4/5.6;display:flex;align-items:flex-end;color:#fff;transition:transform .6s var(--ease),box-shadow .6s var(--ease);animation:rise .9s var(--ease) both}
 .card:nth-child(2){animation-delay:.12s}
+.card:nth-child(3){animation-delay:.24s}
 @keyframes rise{from{opacity:0;transform:translateY(30px)}}
 .card:hover{transform:translateY(-8px);box-shadow:0 40px 70px -35px rgba(0,0,0,.45)}
 .card img{position:absolute;inset:0;transition:transform 1.4s var(--ease)}
 .card:hover img{transform:scale(1.05)}
 .card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 35%,rgba(0,0,0,.82))}
-.tx{position:relative;z-index:1;padding:36px}
+.tx{position:relative;z-index:1;padding:30px}
 .tx small{font-size:14px;font-weight:600;opacity:.8}
 .tx h2{font-size:clamp(28px,3.4vw,40px);letter-spacing:-.03em;line-height:1.1;margin:8px 0 10px}
 .tx p{opacity:.85;max-width:380px}
 .go{display:inline-flex;margin-top:20px;padding:11px 20px;border-radius:999px;background:#fff;color:#1d1d1f;font-weight:600;font-size:15px}
 :focus-visible{outline:3px solid #0b7a5c;outline-offset:4px}
 footer{border-top:1px solid var(--line);padding:30px 0 60px;color:var(--muted);font-size:14px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}.card{aspect-ratio:4/4.2}}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.card{aspect-ratio:4/4.2}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -41,9 +42,13 @@ footer{border-top:1px solid var(--line);padding:30px 0 60px;color:var(--muted);f
 <div class="wrap">
   <header>
     <h1>Сайты, на которых записываются и заказывают.</h1>
-    <p>Два примера для малого бизнеса: онлайн-запись для салона и меню для кофейни. Откройте с телефона — они сделаны в первую очередь для него.</p>
+    <p>Три примера для малого бизнеса: салон красоты, груминг-студия и кофейня. Откройте с телефона — они сделаны в первую очередь для него.</p>
   </header>
   <main class="grid">
+    <a class="card" href="salon.html">
+      <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1400&q=80" alt="Светлый зал салона красоты с бордовыми креслами">
+      <div class="tx"><small>Салон красоты</small><h2>Локон</h2><p>Прайс по категориям, мастера, работы и запись в WhatsApp в одно нажатие.</p><span class="go">Открыть сайт →</span></div>
+    </a>
     <a class="card" href="grooming.html">
       <img src="https://images.unsplash.com/photo-1772437883387-8076cf660c65?auto=format&fit=crop&w=1400&q=80" alt="Пушистая белая собака в голубой бандане">
       <div class="tx"><small>Груминг-студия</small><h2>Лапа</h2><p>Услуги с ценами, работы, отзывы и запись на удобное время без звонка.</p><span class="go">Открыть сайт →</span></div>
