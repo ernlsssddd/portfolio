@@ -23,6 +23,8 @@ header p{font-size:clamp(18px,2vw,22px);color:var(--muted);max-width:620px;margi
 .card:nth-child(2){animation-delay:.12s}
 .card:nth-child(3){animation-delay:.24s}
 .card:nth-child(4){animation-delay:.36s}
+.card:nth-child(5){animation-delay:.48s}
+.card.wide{grid-column:1/-1;aspect-ratio:16/7}
 @keyframes rise{from{opacity:0;transform:translateY(30px)}}
 .card:hover{transform:translateY(-8px);box-shadow:0 40px 70px -35px rgba(0,0,0,.45)}
 .card img{position:absolute;inset:0;transition:transform 1.4s var(--ease)}
@@ -35,7 +37,7 @@ header p{font-size:clamp(18px,2vw,22px);color:var(--muted);max-width:620px;margi
 .go{display:inline-flex;margin-top:20px;padding:11px 20px;border-radius:999px;background:#fff;color:#1d1d1f;font-weight:600;font-size:15px}
 :focus-visible{outline:3px solid #0b7a5c;outline-offset:4px}
 footer{border-top:1px solid var(--line);padding:30px 0 60px;color:var(--muted);font-size:14px}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.card{aspect-ratio:4/4.2}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.card,.card.wide{aspect-ratio:4/4.2}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -43,9 +45,13 @@ footer{border-top:1px solid var(--line);padding:30px 0 60px;color:var(--muted);f
 <div class="wrap">
   <header>
     <h1>Сайты, на которых записываются и заказывают.</h1>
-    <p>Четыре примера для малого бизнеса: салон красоты, барбершоп, груминг-студия и кофейня. Откройте с телефона — они сделаны в первую очередь для него.</p>
+    <p>Пять примеров для малого бизнеса: стоматология, салон красоты, барбершоп, груминг-студия и кофейня. Откройте с телефона — они сделаны в первую очередь для него.</p>
   </header>
   <main class="grid">
+    <a class="card wide" href="clinic.html">
+      <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=1800&q=80" alt="Светлый стоматологический кабинет с креслом">
+      <div class="tx"><small>Стоматологическая клиника</small><h2>Дентария</h2><p>Услуги с ценами «от», врачи, первый визит и запись в WhatsApp на удобное время.</p><span class="go">Открыть сайт →</span></div>
+    </a>
     <a class="card" href="salon.html">
       <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1400&q=80" alt="Светлый зал салона красоты с бордовыми креслами">
       <div class="tx"><small>Салон красоты</small><h2>Локон</h2><p>Прайс по категориям, мастера, работы и запись в WhatsApp в одно нажатие.</p><span class="go">Открыть сайт →</span></div>
